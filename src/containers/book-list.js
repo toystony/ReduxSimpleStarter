@@ -1,0 +1,43 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+//selectbook is an action creator
+import { selectBook} from "../actions/index"
+import { bindActionCreators } from 'redux'
+
+class BookList extends Component {
+
+    renderList() {
+        return this.props.books.map((book) => {
+            return (
+                <li
+                    key={book.title}
+                    onClick={() => this.props.selectBook(book)}
+                    className="list-group-item">{book.title}</li>
+            );
+        });
+    }
+
+    render() {
+        console.log(this.props);
+        return (
+            <ul className="list-group col-sm-4">
+                {this.renderList()}
+            </ul>
+        )
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return bindActionCreators( {selectBook: selectBook}, dispatch);
+}
+
+function mapStateToProps(state) {
+    //whatever is returned here will show up as props
+    //inside of BookList
+    return {
+        //books is pointing to books-reducer
+        books: state.books
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);
